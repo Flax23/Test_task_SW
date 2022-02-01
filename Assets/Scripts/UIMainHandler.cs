@@ -23,8 +23,7 @@ public class UIMainHandler : MonoBehaviour
         activForm = formsPanel.GetChild(0).gameObject;
         InitColors();
         InitColorsPalette();
-        targetButton = mainColor.GetChild(0).gameObject;
-        targetButton.GetComponent<Image>().sprite = selectedColor;
+        InitTargetButton();
     }
 
     public void RandomColors()
@@ -36,7 +35,11 @@ public class UIMainHandler : MonoBehaviour
 
             for (int j = 0; j < curentColors.Length; j++)
             {
-                if (randomColor[i].Equals(curentColors[j])) i--;
+                if (randomColor[i].Equals(curentColors[j]))
+                {
+                    i = 0;
+                    //Debug.Log("Одинаковые значения " + i + " " + j);
+                } 
             }
         }
         
@@ -142,5 +145,11 @@ public class UIMainHandler : MonoBehaviour
         {
             ColorPalette.Add(colorPanel.GetChild(i).gameObject.GetComponent<Button>().colors.normalColor);
         }
+    }
+
+    public void InitTargetButton()
+    {
+        targetButton = mainColor.GetChild(0).gameObject;
+        targetButton.GetComponent<Image>().sprite = selectedColor;
     }
 }
