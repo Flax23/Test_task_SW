@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &26914464
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1782,7 +1782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &488750552
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1857,7 +1857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &496216013
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2798,12 +2798,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formsPanel: {fileID: 2060099020}
   mainColor: {fileID: 707548989}
+  colorPanel: {fileID: 200846271}
   color: {fileID: 21300000, guid: fc906cd4d4325834594947141b020e13, type: 3}
   selectedColor: {fileID: 21300000, guid: 2bbd25d1ce497854da2c588aa5ed94f3, type: 3}
-  targetButtonImage: {fileID: 0}
   targetButton: {fileID: 0}
-  selectColor: {fileID: 0}
+  selectColorButton: {fileID: 0}
   activForm: {fileID: 0}
+  curentColors:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &743544093
 GameObject:
   m_ObjectHideFlags: 0
@@ -6938,7 +6942,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2132584801}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 729402806}
+        m_TargetAssemblyTypeName: UIMainHandler, Assembly-CSharp
+        m_MethodName: RandomColors
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2132584801
 MonoBehaviour:
   m_ObjectHideFlags: 0
