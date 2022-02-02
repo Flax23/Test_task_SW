@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIMainHandler : MonoBehaviour
 {
     [SerializeField] private RectTransform formsPanel;
+    [SerializeField] private RectTransform formsAndLogoPanel;
     [SerializeField] private RectTransform mainColor;
     [SerializeField] private RectTransform colorPanel;
     [SerializeField] private Sprite color;
@@ -15,6 +16,7 @@ public class UIMainHandler : MonoBehaviour
     [SerializeField] private Button selectColorButton;
     [SerializeField] private GameObject activForm;
     [SerializeField] private Color[] curentColors = new Color[3];
+    [SerializeField] private Color[] randomColor = new Color[3];
     [SerializeField] private List<Color> ColorPalette = new List<Color>();
      
 
@@ -27,19 +29,23 @@ public class UIMainHandler : MonoBehaviour
     }
 
     public void RandomColors()
-    {            
-        Color[] randomColor = new Color[3];
+    {                   
         for (int i = 0; i < randomColor.Length; i++)
         {
-           randomColor[i] = ColorPalette[Random.Range(0, ColorPalette.Count)];
+            randomColor[i] = ColorPalette[Random.Range(0, ColorPalette.Count)];
 
-            for (int j = 0; j < curentColors.Length; j++)
+            for (int j = 0; j < randomColor.Length; j++)
             {
-                if (randomColor[i].Equals(curentColors[j]))
+                if (i == j)
                 {
-                    i = 0;
-                    //Debug.Log("Одинаковые значения " + i + " " + j);
-                } 
+                    continue;
+                }
+
+                if (randomColor[i].Equals(randomColor[j]))
+                {
+                    Debug.Log("Одинаковый цвет");
+                    RandomColors();
+                }
             }
         }
         
@@ -152,4 +158,11 @@ public class UIMainHandler : MonoBehaviour
         targetButton = mainColor.GetChild(0).gameObject;
         targetButton.GetComponent<Image>().sprite = selectedColor;
     }
+
+    public void Logo()
+    {
+        formsAndLogoPanel.GetComponent<Animator>().SetBool("isNext", true);
+    }
+
+    
 }
