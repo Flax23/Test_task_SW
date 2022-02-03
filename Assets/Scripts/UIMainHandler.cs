@@ -235,19 +235,17 @@ public class UIMainHandler : MonoBehaviour
     }
 
     public void InitSaveColors()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
-            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
-            //MainManager.Instance.formColorToSave[i] = formsPanel.GetChild(0).GetChild(i).GetComponent<Image>().color;
-        }
+    {  
+            for (int i = 0; i < 5; i++)
+            {
+                formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
+                formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];               
+            }
 
-        for (int i = 0; i < 5; i++)
-        {
-            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
-            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
-            //MainManager.Instance.formColorToSave[i + 5] = formsPanel.GetChild(1).GetChild(i).GetComponent<Image>().color;
-        }
+            for (int i = 0; i < 5; i++)
+            {
+                formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
+                formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];               
+            }      
     }
 }
