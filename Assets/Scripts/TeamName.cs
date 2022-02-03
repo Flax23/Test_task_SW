@@ -16,7 +16,7 @@ public class TeamName : MonoBehaviour
 
     void Start()
     {
-        inputName.text = MainManager.Instance.teamName;
+        teamName.GetComponent<InputField>().text = MainManager.Instance.teamName.ToString();
 
         for (int i = 0; i < 5; i++)
         {
@@ -51,7 +51,7 @@ public class TeamName : MonoBehaviour
 
 
 #if UNITY_EDITOR
-        //EditorApplication.ExitPlaymode();
+        EditorApplication.ExitPlaymode();
 #else
         Application.Quit(); // original code to quit Unity player
 #endif

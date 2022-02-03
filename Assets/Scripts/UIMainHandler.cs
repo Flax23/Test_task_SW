@@ -26,11 +26,11 @@ public class UIMainHandler : MonoBehaviour
     {
         MainManager.Instance.LoadState();
         activForm = formsPanel.GetChild(0).gameObject;
-        InitColorsPalette();
-        InitTargetButton();
+        InitColorsPalette();       
         InitSaveColors();
         InitColors();
-        
+        InitTargetButton();
+
     }
 
     public void RandomColors()
@@ -116,9 +116,10 @@ public class UIMainHandler : MonoBehaviour
                 formsPanel.GetChild(i).gameObject.SetActive(true);
                 activForm = formsPanel.GetChild(i).gameObject;
                 InitColors();
+                InitTargetButton();
                 return;
             }
-        }
+        }       
     }
 
     public void PreviousForm()
@@ -135,9 +136,10 @@ public class UIMainHandler : MonoBehaviour
                 formsPanel.GetChild(i).gameObject.SetActive(true);
                 activForm = formsPanel.GetChild(i).gameObject;
                 InitColors();
+                InitTargetButton();
                 return;
             }
-        }
+        }      
     }
 
     public void InitColors()
@@ -176,11 +178,12 @@ public class UIMainHandler : MonoBehaviour
             {
                 MainManager.Instance.formColorToSave[i] = formsPanel.GetChild(0).GetChild(i).GetComponent<Image>().color;
                 MainManager.Instance.formColorToSave[i + 5] = formsPanel.GetChild(1).GetChild(i).GetComponent<Image>().color;
+                selectedForm.transform.Find("Layer_" + i).GetComponent<Image>().sprite = activForm.transform.Find("Layer_" + i).GetComponent<Image>().sprite;
             }
 
             selectedForm.transform.Find("Layer_1").GetComponent<Image>().color = activForm.transform.Find("Layer_1").GetComponent<Image>().color;
             selectedForm.transform.Find("Layer_2").GetComponent<Image>().color = activForm.transform.Find("Layer_2").GetComponent<Image>().color;
-            selectedForm.transform.Find("Layer_3").GetComponent<Image>().color = activForm.transform.Find("Layer_3").GetComponent<Image>().color;
+            selectedForm.transform.Find("Layer_3").GetComponent<Image>().color = activForm.transform.Find("Layer_3").GetComponent<Image>().color;          
 
             formsPanel = GameObject.Find("Logo Panel").GetComponent<RectTransform>();
 
@@ -189,7 +192,9 @@ public class UIMainHandler : MonoBehaviour
             activForm = formsAndLogoPanel.Find("Logo").GetChild(2).GetChild(0).gameObject;
            
             InitColors();
-            
+            targetButton.GetComponent<Image>().sprite = color;
+            InitTargetButton();
+
         }
 
         else
