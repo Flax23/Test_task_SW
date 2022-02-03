@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIMainHandler : MonoBehaviour
 {
@@ -15,10 +16,11 @@ public class UIMainHandler : MonoBehaviour
     [SerializeField] private GameObject targetButton;
     [SerializeField] private Button selectColorButton;
     [SerializeField] private GameObject activForm;
+    [SerializeField] private GameObject selectedForm;
     [SerializeField] private Color[] curentColors = new Color[3];
     [SerializeField] private Color[] randomColor = new Color[3];
     [SerializeField] private List<Color> ColorPalette = new List<Color>();
-     
+    private int nextCount = 0;
 
     private void Start()
     {
@@ -161,8 +163,48 @@ public class UIMainHandler : MonoBehaviour
 
     public void Logo()
     {
-        formsAndLogoPanel.GetComponent<Animator>().SetBool("isNext", true);
+        if (nextCount == 0)
+        {
+            nextCount++;
+
+            formsAndLogoPanel.GetComponent<Animator>().SetBool("isNext", true);
+
+            selectedForm.transform.Find("Layer_1").GetComponent<Image>().color = activForm.transform.Find("Layer_1").GetComponent<Image>().color;
+            selectedForm.transform.Find("Layer_2").GetComponent<Image>().color = activForm.transform.Find("Layer_2").GetComponent<Image>().color;
+            selectedForm.transform.Find("Layer_3").GetComponent<Image>().color = activForm.transform.Find("Layer_3").GetComponent<Image>().color;
+
+            formsPanel = GameObject.Find("Logo Panel").GetComponent<RectTransform>();
+
+            SaveFormColor();
+
+            activForm = formsAndLogoPanel.Find("Logo").GetChild(2).GetChild(0).gameObject;
+           
+            InitColors();           
+        }
+
+        else
+        {
+            SaveLogoColor();
+            SceneManager.LoadScene(1);
+        } 
     }
 
-    
+    public void SaveFormColor()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            MainManager.Instance.formSprite[i] = activForm.transform.Find("Layer_" + i).GetComponent<Image>().sprite;          
+            MainManager.Instance.formColor[i] = activForm.transform.Find("Layer_" + i).GetComponent<Image>().color;
+        }
+        
+    }
+
+    public void SaveLogoColor()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            MainManager.Instance.logoSprite[i] = activForm.transform.Find("Layer_" + i).GetComponent<Image>().sprite;
+            MainManager.Instance.logoColor[i] = activForm.transform.Find("Layer_" + i).GetComponent<Image>().color;
+        }         
+    }
 }
