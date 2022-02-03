@@ -51,7 +51,7 @@ public class TeamName : MonoBehaviour
 
 
 #if UNITY_EDITOR
-        EditorApplication.ExitPlaymode();
+        //EditorApplication.ExitPlaymode();
 #else
         Application.Quit(); // original code to quit Unity player
 #endif

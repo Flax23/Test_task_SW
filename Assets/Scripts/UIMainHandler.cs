@@ -24,10 +24,13 @@ public class UIMainHandler : MonoBehaviour
 
     private void Start()
     {
+        MainManager.Instance.LoadState();
         activForm = formsPanel.GetChild(0).gameObject;
-        InitColors();
         InitColorsPalette();
         InitTargetButton();
+        InitSaveColors();
+        InitColors();
+        
     }
 
     public void RandomColors()
@@ -45,7 +48,7 @@ public class UIMainHandler : MonoBehaviour
 
                 if (randomColor[i].Equals(randomColor[j]))
                 {
-                    Debug.Log("Одинаковый цвет");
+                    //Debug.Log("Одинаковый цвет");
                     RandomColors();
                 }
             }
@@ -169,6 +172,12 @@ public class UIMainHandler : MonoBehaviour
 
             formsAndLogoPanel.GetComponent<Animator>().SetBool("isNext", true);
 
+            for (int i = 0; i < 5; i++)
+            {
+                MainManager.Instance.formColorToSave[i] = formsPanel.GetChild(0).GetChild(i).GetComponent<Image>().color;
+                MainManager.Instance.formColorToSave[i + 5] = formsPanel.GetChild(1).GetChild(i).GetComponent<Image>().color;
+            }
+
             selectedForm.transform.Find("Layer_1").GetComponent<Image>().color = activForm.transform.Find("Layer_1").GetComponent<Image>().color;
             selectedForm.transform.Find("Layer_2").GetComponent<Image>().color = activForm.transform.Find("Layer_2").GetComponent<Image>().color;
             selectedForm.transform.Find("Layer_3").GetComponent<Image>().color = activForm.transform.Find("Layer_3").GetComponent<Image>().color;
@@ -179,12 +188,24 @@ public class UIMainHandler : MonoBehaviour
 
             activForm = formsAndLogoPanel.Find("Logo").GetChild(2).GetChild(0).gameObject;
            
-            InitColors();           
+            InitColors();
+            
         }
 
         else
         {
             SaveLogoColor();
+
+            for (int i = 0; i < 5; i++)
+            {
+                MainManager.Instance.logoColorToSave[i] = formsPanel.GetChild(0).GetChild(i).GetComponent<Image>().color;
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                MainManager.Instance.logoColorToSave[i + 5] = formsPanel.GetChild(1).GetChild(i).GetComponent<Image>().color;
+            }
+
             SceneManager.LoadScene(1);
         } 
     }
@@ -206,5 +227,22 @@ public class UIMainHandler : MonoBehaviour
             MainManager.Instance.logoSprite[i] = activForm.transform.Find("Layer_" + i).GetComponent<Image>().sprite;
             MainManager.Instance.logoColor[i] = activForm.transform.Find("Layer_" + i).GetComponent<Image>().color;
         }         
+    }
+
+    public void InitSaveColors()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
+            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
+            //MainManager.Instance.formColorToSave[i] = formsPanel.GetChild(0).GetChild(i).GetComponent<Image>().color;
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
+            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
+            //MainManager.Instance.formColorToSave[i + 5] = formsPanel.GetChild(1).GetChild(i).GetComponent<Image>().color;
+        }
     }
 }
