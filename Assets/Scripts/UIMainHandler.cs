@@ -115,6 +115,12 @@ public class UIMainHandler : MonoBehaviour
 
                 formsPanel.GetChild(i).gameObject.SetActive(true);
                 activForm = formsPanel.GetChild(i).gameObject;
+
+                for (int j = 0; j < curentColors.Length; j++)
+                {
+                    activForm.transform.GetChild(j + 1).GetComponent<Image>().color = curentColors[j];
+                }
+
                 InitColors();
                 InitTargetButton();
                 return;
@@ -135,6 +141,12 @@ public class UIMainHandler : MonoBehaviour
 
                 formsPanel.GetChild(i).gameObject.SetActive(true);
                 activForm = formsPanel.GetChild(i).gameObject;
+
+                for (int j = 0; j < curentColors.Length; j++)
+                {
+                    activForm.transform.GetChild(j + 1).GetComponent<Image>().color = curentColors[j];
+                }
+
                 InitColors();
                 InitTargetButton();
                 return;
