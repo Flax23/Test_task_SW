@@ -21,6 +21,7 @@ public class UIMainHandler : MonoBehaviour
     [SerializeField] private Color[] randomColor = new Color[3];
     [SerializeField] private List<Color> ColorPalette = new List<Color>();
     private int nextCount = 0;
+    private bool _isLoading;
 
     private void Start()
     {
@@ -223,7 +224,8 @@ public class UIMainHandler : MonoBehaviour
                 MainManager.Instance.logoColorToSave[i + 5] = formsPanel.GetChild(1).GetChild(i).GetComponent<Image>().color;
             }
 
-            SceneManager.LoadScene(1);
+            StartCoroutine(LoadSceneRoutine());
+            //SceneManager.LoadScene(1);
         } 
     }
 
@@ -259,5 +261,35 @@ public class UIMainHandler : MonoBehaviour
                 formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
                 formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];               
             }      
+    }
+
+    private IEnumerator LoadSceneRoutine()
+    {
+        _isLoading = true;
+
+        var waitFading = true; // флаг ожидания затемнения экрана
+        Fader.instance.FadeIn(() => waitFading = false); //В колбек передаем бестелесный метод, меняем значение флага
+
+        while (waitFading) //Ожидание: пока фейдер не затемнит экран, ничего не делаем
+            yield return null;
+
+        /* Асинхронная загрузка сцены */
+        var async = SceneManager.LoadSceneAsync(1);
+        async.allowSceneActivation = false;
+
+        while (async.progress < 0.9f)
+            yield return null;
+
+        async.allowSceneActivation = true;
+        /* Конец загрузки */
+
+        waitFading = true; //Флаг для ожидания высветления экрана
+        Fader.instance.FadeOut(() => waitFading = false); //В колбек передаем бестелесный метод, меняем значение флага
+
+        while (waitFading) //Ожидание: пока фейдер не высветлит экран, ничего не делаем
+            yield return null;
+
+        _isLoading = false; // Заканчиваем загрузку экрана
+
     }
 }
