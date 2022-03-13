@@ -17,14 +17,17 @@ public class UIMainHandler : MonoBehaviour
     [SerializeField] private Button selectColorButton;
     [SerializeField] private GameObject activForm;
     [SerializeField] private GameObject selectedForm;
+    [SerializeField] private GameObject content;
     [SerializeField] private Color[] curentColors = new Color[3];
     [SerializeField] private Color[] randomColor = new Color[3];
     [SerializeField] private List<Color> ColorPalette = new List<Color>();
+    private SnapScrolling snapScrollingScript;
     private int nextCount = 0;
     private bool _isLoading;
 
     private void Start()
     {
+        snapScrollingScript = content.GetComponent<SnapScrolling>();
         MainManager.Instance.LoadState();
         activForm = formsPanel.GetChild(0).GetChild(0).GetChild(0).gameObject;
         InitColorsPalette();       
@@ -107,17 +110,20 @@ public class UIMainHandler : MonoBehaviour
     {       
         for (int i = 0; i < formsPanel.GetChild(0).GetChild(0).childCount; i++)
         {
-            if (formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.activeInHierarchy)
-            {                   
-                formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(false);
-                i++;
+            //if (formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.activeInHierarchy)
+            //{                   
+            //formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(false);
+            //i++;
 
-                if (i >= formsPanel.GetChild(0).GetChild(0).childCount) i--;
+            //if (i >= formsPanel.GetChild(0).GetChild(0).childCount) i--;
 
-                formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(true);
-                activForm = formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject;
+            //formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(true);
+            //activForm = formsPanel.GetChild(0).GetChild(0).GetChild(i+1).gameObject;
+            i++;                     
+            if (i >= formsPanel.GetChild(0).GetChild(0).childCount) i--;
+            activForm = snapScrollingScript.panPrefab[i].gameObject;
 
-                for (int j = 0; j < curentColors.Length; j++)
+            for (int j = 0; j < curentColors.Length; j++)
                 {
                     activForm.transform.GetChild(j + 1).GetComponent<Image>().color = curentColors[j];
                 }
@@ -125,7 +131,7 @@ public class UIMainHandler : MonoBehaviour
                 InitColors();
                 InitTargetButton();
                 return;
-            }
+            //}
         }       
     }
 
