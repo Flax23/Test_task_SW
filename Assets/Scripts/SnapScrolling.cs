@@ -25,23 +25,14 @@ public class SnapScrolling : MonoBehaviour
     private RectTransform contentRect;
     private Vector2 contentVector;
 
-    [SerializeField] private int selectedPanID;
+    [SerializeField] public int selectedPanID;
     [SerializeField] private bool isScrolling;
+    private UIMainHandler UIMainHandlerScript;
 
     private void Start()
     {
-        contentRect = GetComponent<RectTransform>();
-        instPans = new GameObject[panCount];
-        pansPos = new Vector2[panCount];
-        pansScale = new Vector2[panCount];
-        for (int i = 0; i < panCount; i++)
-        {
-            instPans[i] = Instantiate(panPrefab[i], transform, false);
-            if (i == 0) continue;
-            instPans[i].transform.localPosition = new Vector2(instPans[i - 1].transform.localPosition.x + panPrefab[i].GetComponent<RectTransform>().sizeDelta.x + panOffset,
-               instPans[i].transform.localPosition.y);
-            pansPos[i] = -instPans[i].transform.localPosition;
-        }
+        UIMainHandlerScript = GameObject.Find("Canvas").GetComponent<UIMainHandler>();
+        Init();
     }
 
     private void FixedUpdate()
@@ -56,6 +47,7 @@ public class SnapScrolling : MonoBehaviour
             {
                 nearestPos = distance;
                 selectedPanID = i;
+                UIMainHandlerScript.SelectActiveItem(selectedPanID);
             }
             float scale = Mathf.Clamp(1 / (distance / panOffset) * scaleOffset, 0.5f, 1f);
             pansScale[i].x = Mathf.SmoothStep(instPans[i].transform.localScale.x, scale + 0.1f, scaleSpeed * Time.fixedDeltaTime);
@@ -74,4 +66,21 @@ public class SnapScrolling : MonoBehaviour
         isScrolling = scroll;
         if (scroll) scrollRect.inertia = true;
     }
+
+    public void Init()
+    {
+        contentRect = GetComponent<RectTransform>();
+        instPans = new GameObject[panCount];
+        pansPos = new Vector2[panCount];
+        pansScale = new Vector2[panCount];
+        for (int i = 0; i < panCount; i++)
+        {
+            instPans[i] = Instantiate(panPrefab[i], transform, false);
+            if (i == 0) continue;
+            instPans[i].transform.localPosition = new Vector2(instPans[i - 1].transform.localPosition.x + panPrefab[i].GetComponent<RectTransform>().sizeDelta.x + panOffset,
+               instPans[i].transform.localPosition.y);
+            pansPos[i] = -instPans[i].transform.localPosition;
+        }
+    }
+
 }

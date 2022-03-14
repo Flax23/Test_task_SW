@@ -11,6 +11,7 @@ public class UIMainHandler : MonoBehaviour
     [SerializeField] private RectTransform formsAndLogoPanel;
     [SerializeField] private RectTransform mainColor;
     [SerializeField] private RectTransform colorPanel;
+    [SerializeField] private RectTransform selectedFormPanel;
     [SerializeField] private Sprite color;
     [SerializeField] private Sprite selectedColor;
     [SerializeField] private GameObject targetButton;
@@ -30,8 +31,8 @@ public class UIMainHandler : MonoBehaviour
         snapScrollingScript = content.GetComponent<SnapScrolling>();
         MainManager.Instance.LoadState();
         activForm = formsPanel.GetChild(0).GetChild(0).GetChild(0).gameObject;
-        InitColorsPalette();       
-        InitSaveColors();
+        InitColorsPalette();
+        loadFormColors();
         InitColors();
         InitTargetButton();
 
@@ -107,58 +108,22 @@ public class UIMainHandler : MonoBehaviour
     }
 
     public void NextForm()
-    {       
-        for (int i = 0; i < formsPanel.GetChild(0).GetChild(0).childCount; i++)
-        {
-            //if (formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.activeInHierarchy)
-            //{                   
-            //formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(false);
-            //i++;
-
-            //if (i >= formsPanel.GetChild(0).GetChild(0).childCount) i--;
-
-            //formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(true);
-            //activForm = formsPanel.GetChild(0).GetChild(0).GetChild(i+1).gameObject;
-            i++;                     
-            if (i >= formsPanel.GetChild(0).GetChild(0).childCount) i--;
-            activForm = snapScrollingScript.panPrefab[i].gameObject;
-
-            for (int j = 0; j < curentColors.Length; j++)
-                {
-                    activForm.transform.GetChild(j + 1).GetComponent<Image>().color = curentColors[j];
-                }
-
-                InitColors();
-                InitTargetButton();
-                return;
-            //}
-        }       
+    {
+        if (snapScrollingScript.selectedPanID < formsPanel.GetChild(0).GetChild(0).childCount -1)
+        { 
+            content.transform.localPosition = new Vector2(-100, 0);          
+            SelectActiveItem(snapScrollingScript.selectedPanID + 1);
+        }      
     }
 
     public void PreviousForm()
     {
-        for (int i = 0; i < formsPanel.GetChild(0).GetChild(0).childCount; i++)
+        if (snapScrollingScript.selectedPanID > 0)
         {
-            if (formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.activeInHierarchy)
-            {
-                formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(false);
-                i--;
-
-                if (i < 0) i++;
-
-                formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject.SetActive(true);
-                activForm = formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject;
-
-                for (int j = 0; j < curentColors.Length; j++)
-                {
-                    activForm.transform.GetChild(j + 1).GetComponent<Image>().color = curentColors[j];
-                }
-
-                InitColors();
-                InitTargetButton();
-                return;
-            }
-        }      
+            content.transform.localPosition = new Vector2(100, 0);
+            int selectedFormID = snapScrollingScript.selectedPanID - 1;
+            SelectActiveItem(snapScrollingScript.selectedPanID - 1);
+        }   
     }
 
     public void InitColors()
@@ -191,7 +156,8 @@ public class UIMainHandler : MonoBehaviour
         {
             nextCount++;
 
-            formsAndLogoPanel.GetComponent<Animator>().SetBool("isNext", true);
+            selectedFormPanel.GetComponent<Animator>().SetBool("isNext", true);
+            formsAndLogoPanel.GetChild(0).GetChild(0).gameObject.SetActive(false);
 
             for (int i = 0; i < 5; i++)
             {
@@ -204,12 +170,23 @@ public class UIMainHandler : MonoBehaviour
             selectedForm.transform.Find("Layer_2").GetComponent<Image>().color = activForm.transform.Find("Layer_2").GetComponent<Image>().color;
             selectedForm.transform.Find("Layer_3").GetComponent<Image>().color = activForm.transform.Find("Layer_3").GetComponent<Image>().color;          
 
-            formsPanel = GameObject.Find("Logo Panel").GetComponent<RectTransform>();
-
             SaveFormColor();
 
-            activForm = formsAndLogoPanel.Find("Logo").GetChild(2).GetChild(0).GetChild(0).GetChild(0).gameObject;
-           
+            for (int i = 0; i < snapScrollingScript.panCount; i++)
+            {
+                Destroy(formsPanel.GetChild(0).GetChild(0).GetChild(i).gameObject);
+            }
+
+            for (int i = 0; i < snapScrollingScript.panCount; i++)
+            {
+                snapScrollingScript.panPrefab[i] = Resources.Load<GameObject>("Logo_" + i);
+            }
+            loadLogoColors();
+            activForm = formsPanel.GetChild(0).GetChild(0).GetChild(0).gameObject;
+            //activForm = formsAndLogoPanel.Find("Logo").GetChild(2).GetChild(0).GetChild(0).GetChild(0).gameObject;
+            content.transform.position = new Vector2(0, 0);
+            snapScrollingScript.Init();
+
             InitColors();
             targetButton.GetComponent<Image>().sprite = color;
             InitTargetButton();
@@ -254,19 +231,43 @@ public class UIMainHandler : MonoBehaviour
         }         
     }
 
-    public void InitSaveColors()
-    {  
-            for (int i = 0; i < 5; i++)
-            {
-                formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
-                formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.logoColorToSave[i];               
-            }
+    //public void InitSaveColors()
+    //{  
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
+    //            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.logoColorToSave[i];               
+    //        }
 
-            for (int i = 0; i < 5; i++)
+    //        for (int i = 0; i < 5; i++)
+    //        {
+    //            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
+    //            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.logoColorToSave[i + 5];               
+    //        }      
+    //}
+
+    public void loadFormColors()
+    {
+        for (int i = 0; i < content.GetComponent<RectTransform>().childCount; i++)
+        {
+            for (int j = 0; j < 5; j++)
             {
-                formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
-                formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.logoColorToSave[i + 5];               
-            }      
+                content.GetComponent<RectTransform>().GetChild(i).GetChild(j).GetComponent<Image>().color = MainManager.Instance.formColorToSave[j];
+            }
+        }
+          
+    }
+
+    public void loadLogoColors()
+    {
+        for (int i = 0; i < content.GetComponent<RectTransform>().childCount; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                content.GetComponent<RectTransform>().GetChild(i).GetChild(j).GetComponent<Image>().color = MainManager.Instance.logoColorToSave[j];
+            }
+        }
+
     }
 
     private IEnumerator LoadSceneRoutine()
@@ -296,6 +297,17 @@ public class UIMainHandler : MonoBehaviour
             yield return null;
 
         _isLoading = false; // Заканчиваем загрузку экрана
+    }
 
+    public void SelectActiveItem(int ID)
+    {
+        activForm = formsPanel.GetChild(0).GetChild(0).GetChild(ID).gameObject;
+        for (int j = 0; j < curentColors.Length; j++)
+        {
+            activForm.transform.GetChild(j + 1).GetComponent<Image>().color = curentColors[j];
+        }
+
+        InitColors();
+        InitTargetButton();
     }
 }
