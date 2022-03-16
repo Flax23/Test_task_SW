@@ -53,7 +53,6 @@ public class UIMainHandler : MonoBehaviour
 
                 if (randomColor[i].Equals(randomColor[j]))
                 {
-                    //Debug.Log("Одинаковый цвет");
                     RandomColors();
                 }
             }
@@ -113,6 +112,11 @@ public class UIMainHandler : MonoBehaviour
         { 
             content.transform.localPosition = new Vector2(-100, 0);          
             SelectActiveItem(snapScrollingScript.selectedPanID + 1);
+
+            InitColors();
+
+            targetButton.GetComponent<Image>().sprite = color;
+            InitTargetButton();
         }      
     }
 
@@ -123,6 +127,11 @@ public class UIMainHandler : MonoBehaviour
             content.transform.localPosition = new Vector2(100, 0);
             int selectedFormID = snapScrollingScript.selectedPanID - 1;
             SelectActiveItem(snapScrollingScript.selectedPanID - 1);
+
+            InitColors();
+
+            targetButton.GetComponent<Image>().sprite = color;
+            InitTargetButton();
         }   
     }
 
@@ -181,9 +190,10 @@ public class UIMainHandler : MonoBehaviour
             {
                 snapScrollingScript.panPrefab[i] = Resources.Load<GameObject>("Logo_" + i);
             }
+
             loadLogoColors();
+
             activForm = formsPanel.GetChild(0).GetChild(0).GetChild(0).gameObject;
-            //activForm = formsAndLogoPanel.Find("Logo").GetChild(2).GetChild(0).GetChild(0).GetChild(0).gameObject;
             content.transform.position = new Vector2(0, 0);
             snapScrollingScript.Init();
 
@@ -207,8 +217,7 @@ public class UIMainHandler : MonoBehaviour
                 MainManager.Instance.logoColorToSave[i + 5] = formsPanel.GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Image>().color;
             }
 
-            StartCoroutine(LoadSceneRoutine());
-            //SceneManager.LoadScene(1);
+            StartCoroutine(LoadSceneRoutine());          
         } 
     }
 
@@ -230,21 +239,6 @@ public class UIMainHandler : MonoBehaviour
             MainManager.Instance.logoColor[i] = activForm.transform.Find("Layer_" + i).GetComponent<Image>().color;
         }         
     }
-
-    //public void InitSaveColors()
-    //{  
-    //        for (int i = 0; i < 5; i++)
-    //        {
-    //            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i];
-    //            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(i).GetComponent<Image>().color = MainManager.Instance.logoColorToSave[i];               
-    //        }
-
-    //        for (int i = 0; i < 5; i++)
-    //        {
-    //            formsAndLogoPanel.GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.formColorToSave[i + 5];
-    //            formsAndLogoPanel.GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Image>().color = MainManager.Instance.logoColorToSave[i + 5];               
-    //        }      
-    //}
 
     public void loadFormColors()
     {
@@ -305,9 +299,6 @@ public class UIMainHandler : MonoBehaviour
         for (int j = 0; j < curentColors.Length; j++)
         {
             activForm.transform.GetChild(j + 1).GetComponent<Image>().color = curentColors[j];
-        }
-
-        InitColors();
-        InitTargetButton();
+        }       
     }
 }
