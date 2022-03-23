@@ -18,7 +18,7 @@ public class UIMainHandler : MonoBehaviour
     [SerializeField] private Button selectColorButton;
     [SerializeField] private GameObject activForm;
     [SerializeField] private GameObject selectedForm;
-    [SerializeField] private GameObject content;
+    public GameObject content;
     [SerializeField] private Color[] curentColors = new Color[3];
     [SerializeField] private Color[] randomColor = new Color[3];
     [SerializeField] private List<Color> ColorPalette = new List<Color>();
@@ -109,8 +109,10 @@ public class UIMainHandler : MonoBehaviour
     public void NextForm()
     {
         if (snapScrollingScript.selectedPanID < formsPanel.GetChild(0).GetChild(0).childCount -1)
-        { 
-            content.transform.localPosition = new Vector2(-100, 0);          
+        {
+            content.GetComponent<Animator>().SetBool("isLeft", true);
+            //content.GetComponent<Animator>().enabled = false;
+
             SelectActiveItem(snapScrollingScript.selectedPanID + 1);
 
             InitColors();
@@ -124,7 +126,9 @@ public class UIMainHandler : MonoBehaviour
     {
         if (snapScrollingScript.selectedPanID > 0)
         {
-            content.transform.localPosition = new Vector2(100, 0);
+            content.GetComponent<Animator>().SetBool("isLeft", false);
+            //content.GetComponent<Animator>().enabled = false;
+
             int selectedFormID = snapScrollingScript.selectedPanID - 1;
             SelectActiveItem(snapScrollingScript.selectedPanID - 1);
 

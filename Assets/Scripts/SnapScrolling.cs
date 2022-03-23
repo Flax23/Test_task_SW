@@ -81,6 +81,5 @@ public class SnapScrolling : MonoBehaviour
                instPans[i].transform.localPosition.y);
             pansPos[i] = -instPans[i].transform.localPosition;
         }
-    }
-
+    }   
 }
