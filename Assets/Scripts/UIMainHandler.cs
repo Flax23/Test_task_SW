@@ -110,7 +110,9 @@ public class UIMainHandler : MonoBehaviour
     {
         if (snapScrollingScript.selectedPanID < formsPanel.GetChild(0).GetChild(0).childCount -1)
         {
+            content.GetComponent<Animator>().cullingMode = AnimatorCullingMode.AlwaysAnimate;
             content.GetComponent<Animator>().SetBool("isLeft", true);
+            //content.GetComponent<Animator>().cullingMode = AnimatorCullingMode.CullCompletely;
             //content.GetComponent<Animator>().enabled = false;
 
             SelectActiveItem(snapScrollingScript.selectedPanID + 1);
@@ -126,6 +128,7 @@ public class UIMainHandler : MonoBehaviour
     {
         if (snapScrollingScript.selectedPanID > 0)
         {
+            content.GetComponent<Animator>().cullingMode = AnimatorCullingMode.AlwaysAnimate;
             content.GetComponent<Animator>().SetBool("isLeft", false);
             //content.GetComponent<Animator>().enabled = false;
 
