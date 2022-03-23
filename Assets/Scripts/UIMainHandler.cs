@@ -172,6 +172,7 @@ public class UIMainHandler : MonoBehaviour
         {
             nextCount++;
 
+            content.GetComponent<Animator>().Play("Waiting");
             selectedFormPanel.GetComponent<Animator>().SetBool("isNext", true);
             formsAndLogoPanel.GetChild(0).GetChild(0).gameObject.SetActive(false);
 
