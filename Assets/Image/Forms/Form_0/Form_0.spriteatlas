@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Form_0
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: dd505feb95e97c847acca9d7712093ea, type: 3}
+    - {fileID: 2800000, guid: 7ae0deb36d7ad0144baaafd7f387bc46, type: 3}
+    - {fileID: 2800000, guid: bd15841a81a25314c9378ba1eb52e538, type: 3}
+    - {fileID: 2800000, guid: 5ba0043c9db785649970e5f29f867b68, type: 3}
+    - {fileID: 2800000, guid: 8a2fbe3b38dd8a245a681cc42f34fcc0, type: 3}
+    totalSpriteSurfaceArea: 3200000
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 7ae0deb36d7ad0144baaafd7f387bc46, type: 3}
+  - {fileID: 21300000, guid: bd15841a81a25314c9378ba1eb52e538, type: 3}
+  - {fileID: 21300000, guid: 8a2fbe3b38dd8a245a681cc42f34fcc0, type: 3}
+  - {fileID: 21300000, guid: dd505feb95e97c847acca9d7712093ea, type: 3}
+  - {fileID: 21300000, guid: 5ba0043c9db785649970e5f29f867b68, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - type0layer1
+  - type0layer4
+  - type0layer2
+  - type0layer0
+  - type0layer3
+  m_RenderDataMap: {}
+  m_Tag: Form_0
+  m_IsVariant: 0
